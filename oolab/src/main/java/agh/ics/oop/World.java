@@ -1,48 +1,58 @@
 package agh.ics.oop;
 
-import java.time.format.SignStyle;
-
 public class World {
     public static void main(String[] args)
     {
+        //Lab 1
         System.out.println("System wystartował");
-        Direction[] newArgs;
+        MoveDirection[] newArgs;
         newArgs = change_args(args);
-        run(newArgs);
+        //run(newArgs);
         System.out.println("System zakończył działanie");
+
+        //Lab 2
+        Vector2d position1 = new Vector2d(1, 2);
+        System.out.println(position1);
+        Vector2d position2 = new Vector2d(-2, 1);
+        System.out.println(position2);
+        System.out.println(position1.add(position2));
+
+        System.out.println(MapDirection.NORTH);
+        System.out.println(MapDirection.SOUTH.next());
+        System.out.println(MapDirection.SOUTH.previous());
     }
 
-    public static Direction[] change_args(String[] args)
+    public static MoveDirection[] change_args(String[] args)
     {
-        Direction[] directions = new Direction[args.length];
+        MoveDirection[] directions = new MoveDirection[args.length];
         int i = 0;
         for (String arg:args)
         {
             switch (arg)
             {
                 case "f":
-                    directions[i] = Direction.FORWARD;
+                    directions[i] = MoveDirection.FORWARD;
                     break;
                 case "b":
-                    directions[i] = Direction.BACKWARD;
+                    directions[i] = MoveDirection.BACKWARD;
                     break;
                 case "l":
-                    directions[i] = Direction.LEFT;
+                    directions[i] = MoveDirection.LEFT;
                     break;
                 case "r":
-                    directions[i] = Direction.RIGHT;
+                    directions[i] = MoveDirection.RIGHT;
                     break;
                 default:
-                    directions[i] = Direction.NONE;
+                    directions[i] = MoveDirection.NONE;
             }
             i++;
         }
         return directions;
     }
 
-    public static void run(Direction[] args)
+    public static void run(MoveDirection[] args)
     {
-        for (Direction direct:args) {
+        for (MoveDirection direct:args) {
             switch (direct)
             {
                 case FORWARD:
