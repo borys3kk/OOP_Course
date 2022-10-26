@@ -3,23 +3,42 @@ package agh.ics.oop;
 public class World {
     public static void main(String[] args)
     {
-        //Lab 1
-        System.out.println("System wystartował");
-        MoveDirection[] newArgs;
-        newArgs = change_args(args);
-        //run(newArgs);
-        System.out.println("System zakończył działanie");
+//        //Lab 1
+//        System.out.println("System wystartował");
+//        MoveDirection[] newArgs;
+//        newArgs = change_args(args);
+//        //run(newArgs);
+//        System.out.println("System zakończył działanie");
+//
+//        //Lab 2
+//        Vector2d position1 = new Vector2d(1, 2);
+//        System.out.println(position1);
+//        Vector2d position2 = new Vector2d(-2, 1);
+//        System.out.println(position2);
+//        System.out.println(position1.add(position2));
+//        position1 = position1.add(position2);
+//        System.out.println(position1);
+//        System.out.println(MapDirection.NORTH);
+//        System.out.println(MapDirection.SOUTH.next());
+//        System.out.println(MapDirection.SOUTH.previous());
 
-        //Lab 2
-        Vector2d position1 = new Vector2d(1, 2);
-        System.out.println(position1);
-        Vector2d position2 = new Vector2d(-2, 1);
-        System.out.println(position2);
-        System.out.println(position1.add(position2));
+        //Lab 3
+        Animal testAnimal = new Animal();
+        System.out.println(testAnimal);
+        System.out.println(testAnimal.isAt(new Vector2d(2,2)));
 
-        System.out.println(MapDirection.NORTH);
-        System.out.println(MapDirection.SOUTH.next());
-        System.out.println(MapDirection.SOUTH.previous());
+        testAnimal.move(MoveDirection.RIGHT);
+        testAnimal.move(MoveDirection.FORWARD);
+        testAnimal.move(MoveDirection.FORWARD);
+        testAnimal.move(MoveDirection.FORWARD);
+        System.out.println(testAnimal);
+        testAnimal = new Animal();
+        String[] directions = new String[]{"r", "forward", "f", "forward","r", "f", "f", "backward"};
+        MoveDirection[] newDirections = OptionsParser.parse(directions);
+        for (MoveDirection direction : newDirections){
+            testAnimal.move(direction);
+            System.out.println(testAnimal);
+        }
     }
 
     public static MoveDirection[] change_args(String[] args)
