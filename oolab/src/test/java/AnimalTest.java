@@ -3,42 +3,54 @@ package agh.ics.oop;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+import java.util.Vector;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AnimalTest {
+    private int mapX = 5;
+    private int mapY = 5;
+    IWorldMap map = new RectangularMap(mapX, mapY);
     Animal testerAnimal;
     @BeforeEach
     void init(){
-        testerAnimal = new Animal();
+        testerAnimal = new Animal(map);
     }
 
     @Test
     public void orientationTest() {
         testerAnimal.move(MoveDirection.RIGHT);
-        assertEquals("Zwierze znajduję sie na współrzędnych: (2, 2) skierowane na: Wschód", testerAnimal.toString());
+        assertEquals(MapDirection.EAST, testerAnimal.getCurOrientation());
         testerAnimal.move(MoveDirection.FORWARD);
-        assertEquals("Zwierze znajduję sie na współrzędnych: (3, 2) skierowane na: Wschód", testerAnimal.toString());
+        assertEquals(MapDirection.EAST, testerAnimal.getCurOrientation());
         testerAnimal.move(MoveDirection.LEFT);
-        assertNotEquals("Zwierze znajduję sie na współrzędnych: (3, 2) skierowane na: Zachód", testerAnimal.toString());
+        testerAnimal.move(MoveDirection.LEFT);
+        assertEquals(MapDirection.WEST, testerAnimal.getCurOrientation());
         testerAnimal.move(MoveDirection.LEFT);
         testerAnimal.move(MoveDirection.BACKWARD);
-        assertNotEquals("Zwierze znajduję sie na współrzędnych: (1, 1) skierowane na: Północ", testerAnimal.toString());
+        assertNotEquals(MapDirection.NORTH, testerAnimal.getCurOrientation());
+        testerAnimal.move(MoveDirection.LEFT);
+        testerAnimal.move(MoveDirection.BACKWARD);
+        assertNotEquals(MapDirection.NORTH, testerAnimal.getCurOrientation());
     }
 
     @Test
     public void positionTest() {
         testerAnimal.move(MoveDirection.FORWARD);
-        assertEquals("Zwierze znajduję sie na współrzędnych: (2, 3) skierowane na: Północ", testerAnimal.toString());
+        assertEquals(new Vector2d(2, 3), testerAnimal.getCurPosition());
         testerAnimal.move(MoveDirection.RIGHT);
         testerAnimal.move(MoveDirection.FORWARD);
         testerAnimal.move(MoveDirection.FORWARD);
-        assertEquals("Zwierze znajduję sie na współrzędnych: (4, 3) skierowane na: Wschód", testerAnimal.toString());
+        assertEquals(new Vector2d(4, 3), testerAnimal.getCurPosition());
         testerAnimal.move(MoveDirection.LEFT);
         testerAnimal.move(MoveDirection.BACKWARD);
-        assertNotEquals("Zwierze znajduję sie na współrzędnych: (2, 3) skierowane na: Północ", testerAnimal.toString());
+        assertEquals(new Vector2d(4, 2), testerAnimal.getCurPosition());
+        testerAnimal.move(MoveDirection.FORWARD);
+        assertNotEquals(new Vector2d(2, 3), testerAnimal.getCurPosition());
         testerAnimal.move(MoveDirection.LEFT);
         testerAnimal.move(MoveDirection.FORWARD);
-        assertNotEquals("Zwierze znajduję sie na współrzędnych: (1, 2) skierowane na: Północ", testerAnimal.toString());
+        assertNotEquals(new Vector2d(1, 2), testerAnimal.getCurPosition());
     }
 
     @Test
@@ -46,18 +58,31 @@ public class AnimalTest {
         testerAnimal.move(MoveDirection.FORWARD);
         testerAnimal.move(MoveDirection.FORWARD);
         testerAnimal.move(MoveDirection.FORWARD);
-        assertEquals("Zwierze znajduję sie na współrzędnych: (2, 4) skierowane na: Północ", testerAnimal.toString());
+        assertTrue(testerAnimal.getCurPosition().follows(new Vector2d(0, 0)) && testerAnimal.getCurPosition().precedes(new Vector2d(mapX, mapY)));
         testerAnimal.move(MoveDirection.RIGHT);
         testerAnimal.move(MoveDirection.FORWARD);
         testerAnimal.move(MoveDirection.FORWARD);
         testerAnimal.move(MoveDirection.FORWARD);
-        assertEquals("Zwierze znajduję sie na współrzędnych: (4, 4) skierowane na: Wschód", testerAnimal.toString());
+        assertTrue(testerAnimal.getCurPosition().follows(new Vector2d(0, 0)) && testerAnimal.getCurPosition().precedes(new Vector2d(mapX, mapY)));
         testerAnimal.move(MoveDirection.FORWARD);
-        assertNotEquals("Zwierze znajduję sie na współrzędnych: (5, 4) skierowane na: Wschód", testerAnimal.toString());
         testerAnimal.move(MoveDirection.LEFT);
         testerAnimal.move(MoveDirection.FORWARD);
-        assertNotEquals("Zwierze znajduję sie na współrzędnych: (4, 5) skierowane na: Wschód", testerAnimal.toString());
+        assertTrue(testerAnimal.getCurPosition().follows(new Vector2d(0, 0)) && testerAnimal.getCurPosition().precedes(new Vector2d(mapX, mapY)));
     }
+
+    @Test
+    public void goodMoves(){
+        MoveDirection[] directions = new OptionsParser().parse(new String[]{"f", "b", "r", "l", "f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f"});
+        IWorldMap map = new RectangularMap(10, 5);
+        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
+        IEngine engine = new SimulationEngine(directions, map, positions);
+        engine.run();
+        assertTrue(engine.getAnimal(0).isAt(new Vector2d(2, 0)));
+        assertFalse(engine.getAnimal(0).isAt(new Vector2d(4, 0)));
+        assertTrue(engine.getAnimal(1).isAt(new Vector2d(3, 4)));
+        assertFalse(engine.getAnimal(1).isAt(new Vector2d(0, 2)));
+    }
+
 
     private boolean searchGoodValues(String arg){
         switch (arg) {

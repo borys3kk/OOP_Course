@@ -1,11 +1,38 @@
 package agh.ics.oop;
 
 public class Animal {
-    private Vector2d curPosition = new Vector2d(2, 2);
-    private MapDirection curOrientation = MapDirection.NORTH;
+    private Vector2d curPosition;
+    private MapDirection curOrientation;
+    private IWorldMap map;
+
+    public Animal(IWorldMap map, Vector2d initialPosition){
+        this.map = map;
+        this.curPosition = initialPosition;
+        this.curOrientation = MapDirection.NORTH;
+    }
+
+    public Animal(IWorldMap map){
+        this(map, new Vector2d(2, 2));
+    }
+
+    public Animal() {
+        this(new RectangularMap(5, 5));
+    }
+    public Vector2d getCurPosition() {
+        return curPosition;
+    }
+
+    public MapDirection getCurOrientation() {
+        return curOrientation;
+    }
 
     public String toString(){
-        return "Zwierze znajduję sie na współrzędnych: " + curPosition.toString() + " skierowane na: " + curOrientation.toString();
+        return switch (curOrientation) {
+            case NORTH -> "N";
+            case EAST -> "E";
+            case SOUTH -> "S";
+            case WEST -> "W";
+        };
     }
 
     public boolean isAt(Vector2d position){
@@ -17,13 +44,11 @@ public class Animal {
             case LEFT -> curOrientation = curOrientation.previous();
             case RIGHT -> curOrientation = curOrientation.next();
             case FORWARD -> {
-                if (curPosition.add(curOrientation.toUnitVector()).follows(new Vector2d(-4, -4)) &&
-                        curPosition.add(curOrientation.toUnitVector()).precedes(new Vector2d(4, 4)))
+                if (map.canMoveTo(curPosition.add(curOrientation.toUnitVector())))
                     curPosition = curPosition.add(curOrientation.toUnitVector());
             }
             case BACKWARD -> {
-                if (curPosition.subtract(curOrientation.toUnitVector()).follows(new Vector2d(-4, -4)) &&
-                        curPosition.subtract(curOrientation.toUnitVector()).precedes(new Vector2d(4, 4)))
+                if (map.canMoveTo(curPosition.subtract(curOrientation.toUnitVector())))
                     curPosition=curPosition.subtract(curOrientation.toUnitVector());
             }
 
