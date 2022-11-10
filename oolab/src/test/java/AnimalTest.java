@@ -58,16 +58,16 @@ public class AnimalTest {
         testerAnimal.move(MoveDirection.FORWARD);
         testerAnimal.move(MoveDirection.FORWARD);
         testerAnimal.move(MoveDirection.FORWARD);
-        assertTrue(testerAnimal.getCurPosition().follows(new Vector2d(0, 0)) && testerAnimal.getCurPosition().precedes(new Vector2d(mapX, mapY)));
+        assertEquals(new Vector2d(2,5), testerAnimal.getCurPosition());
         testerAnimal.move(MoveDirection.RIGHT);
         testerAnimal.move(MoveDirection.FORWARD);
         testerAnimal.move(MoveDirection.FORWARD);
         testerAnimal.move(MoveDirection.FORWARD);
-        assertTrue(testerAnimal.getCurPosition().follows(new Vector2d(0, 0)) && testerAnimal.getCurPosition().precedes(new Vector2d(mapX, mapY)));
+        assertEquals(new Vector2d(5,5), testerAnimal.getCurPosition());
         testerAnimal.move(MoveDirection.FORWARD);
         testerAnimal.move(MoveDirection.LEFT);
         testerAnimal.move(MoveDirection.FORWARD);
-        assertTrue(testerAnimal.getCurPosition().follows(new Vector2d(0, 0)) && testerAnimal.getCurPosition().precedes(new Vector2d(mapX, mapY)));
+        assertEquals(new Vector2d(6,6), testerAnimal.getCurPosition());
     }
 
     @Test
@@ -77,9 +77,9 @@ public class AnimalTest {
         Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
         IEngine engine = new SimulationEngine(directions, map, positions);
         engine.run();
-        assertTrue(engine.getAnimal(0).isAt(new Vector2d(2, 0)));
+        assertTrue(engine.getAnimal(0).isAt(new Vector2d(2, -1)));
         assertFalse(engine.getAnimal(0).isAt(new Vector2d(4, 0)));
-        assertTrue(engine.getAnimal(1).isAt(new Vector2d(3, 4)));
+        assertTrue(engine.getAnimal(1).isAt(new Vector2d(3, 7)));
         assertFalse(engine.getAnimal(1).isAt(new Vector2d(0, 2)));
     }
 

@@ -2,22 +2,21 @@ package agh.ics.oop;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class RectangularMap implements IWorldMap{
+public class RectangularMap extends AbstractWorldMap implements IWorldMap{
     private final int width;
     private final int height;
     private final Vector2d leftLowerCorner;
     private final Vector2d rightUpperCorner;
     private final List<Animal> animals;
-    private final MapVisualizer visualizer;
 
     public RectangularMap(int width, int height){
         this.width = width;
         this.height = height;
-        this.leftLowerCorner = new Vector2d(0, 0);
-        this.rightUpperCorner = new Vector2d(this.width - 1, this.height - 1);
+        this.leftLowerCorner = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
+        this.rightUpperCorner = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
         this.animals = new ArrayList<>();
-        this.visualizer = new MapVisualizer(this);
     }
 
     @Override
@@ -52,8 +51,27 @@ public class RectangularMap implements IWorldMap{
         }
         return null;
     }
+    @Override
+    public Vector2d upperRight(){
+        Vector2d curMax = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
+        for (Animal animal: animals) {
+            curMax = curMax.upperRight(animal.getCurPosition());
+        }
+        return curMax;
+    }
+    @Override
+    public Vector2d lowerLeft(){
+        Vector2d curMin = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        for (Animal animal: animals) {
+            curMin = curMin.lowerLeft(animal.getCurPosition());
+        }
+        return curMin;
+    }
 
     public String toString() {
-        return visualizer.draw(leftLowerCorner, rightUpperCorner);
+        System.out.println("test");
+        MapVisualizer map = new MapVisualizer(this);
+        System.out.println(lowerLeft());
+        return map.draw(lowerLeft(), upperRight());
     }
 }
