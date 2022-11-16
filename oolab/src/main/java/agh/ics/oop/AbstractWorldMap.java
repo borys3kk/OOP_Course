@@ -4,57 +4,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractWorldMap implements IWorldMap{
-    protected List<Animal> animals = new ArrayList<Animal>();
-    protected List<Grass> grassPositions = new ArrayList<Grass>();
 
-    public abstract Vector2d upperRight();
-    public abstract Vector2d lowerLeft();
+    protected List<Animal> animals = new ArrayList<>();
+    protected MapVisualizer visualizer = new MapVisualizer(this);
+    protected Vector2d mapUpperRight;
+    protected Vector2d mapLowerLeft;
 
-    @Override
-    public boolean canMoveTo(Vector2d position){
-        return position.follows(lowerLeft()) && position.precedes(upperRight()) && !isOccupied(position);
+    public AbstractWorldMap(Vector2d bottomLeftCorner, Vector2d upperRightCorner){
+        this.mapLowerLeft = bottomLeftCorner;
+        this.mapUpperRight = upperRightCorner;
     }
 
-    @Override
+    abstract Vector2d lowerLeft();
+    abstract Vector2d upperRight();
+
+    public boolean canMoveTo(Vector2d position){
+        return position.follows(mapLowerLeft) && position.precedes(mapUpperRight) && !(objectAt(position) instanceof Animal);
+    }
+
     public boolean place(Animal animal){
-        if (!isOccupied(animal.getCurPosition())){
+        if (canMoveTo(animal.getCurPosition())){
             animals.add(animal);
             return true;
         }
         return false;
     }
 
-    @Override
+    public boolean isOccupied(Vector2d position){
+        return objectAt(position) instanceof Animal;
+    }
+
     public Object objectAt(Vector2d position){
         for (Animal animal : animals){
-            if (animal.getCurPosition().equals(position)){
+            if (animal.isAt(position)){
                 return animal;
-            }
-        }
-        for (Grass grass:grassPositions){
-            if (grass.getPosition().equals(position)){
-                return grass;
             }
         }
         return null;
     }
-    @Override
-    public boolean isOccupied(Vector2d position) {
-        for (Animal animal : animals) {
-            if (animal.getCurPosition().equals(position)) {
-                return true;
-            }
-        }
-        for (Grass grass : grassPositions) {
-            if (grass.getPosition().equals(position)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    @Override
+
     public String toString(){
-        MapVisualizer map = new MapVisualizer(this);
-        return map.draw(lowerLeft(), upperRight());
+        return visualizer.draw(lowerLeft(), upperRight());
     }
 }

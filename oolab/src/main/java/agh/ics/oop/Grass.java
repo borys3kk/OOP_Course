@@ -1,18 +1,20 @@
 package agh.ics.oop;
 
 public class Grass {
-    private final Vector2d position;
-
-    public Grass(Vector2d grassPosition){
-        this.position = grassPosition;
+    private Vector2d curPosition;
+    public Grass(Vector2d position){
+        this.curPosition = position;
     }
 
-    public Vector2d getPosition(){
-        return this.position;
+    public boolean isAt(Vector2d position){
+        return curPosition.equals(position);
     }
 
-    @Override
-    public String toString(){
+    public Vector2d getPosition() {
+        return curPosition;
+    }
+
+    public String toString() {
         return "*";
     }
 }
