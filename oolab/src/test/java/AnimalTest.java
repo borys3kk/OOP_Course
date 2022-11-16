@@ -15,7 +15,7 @@ public class AnimalTest {
     Animal testerAnimal;
     @BeforeEach
     void init(){
-        testerAnimal = new Animal(map);
+        testerAnimal = new Animal(map, new Vector2d(2, 2));
     }
 
     @Test

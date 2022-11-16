@@ -1,11 +1,11 @@
 package agh.ics.oop;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-public abstract class AbstractWorldMap implements IWorldMap{
+public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
 
-    protected List<Animal> animals = new ArrayList<>();
+    protected Map<Vector2d, Animal> animals = new LinkedHashMap<>();
     protected MapVisualizer visualizer = new MapVisualizer(this);
     protected Vector2d mapUpperRight;
     protected Vector2d mapLowerLeft;
@@ -13,6 +13,12 @@ public abstract class AbstractWorldMap implements IWorldMap{
     public AbstractWorldMap(Vector2d bottomLeftCorner, Vector2d upperRightCorner){
         this.mapLowerLeft = bottomLeftCorner;
         this.mapUpperRight = upperRightCorner;
+    }
+
+    public void positionChange(Vector2d oldPosition, Vector2d newPosition){
+        Animal animal = this.animals.get(oldPosition);
+        this.animals.remove(oldPosition);
+        this.animals.put(newPosition, animal);
     }
 
     abstract Vector2d lowerLeft();
@@ -24,7 +30,8 @@ public abstract class AbstractWorldMap implements IWorldMap{
 
     public boolean place(Animal animal){
         if (canMoveTo(animal.getCurPosition())){
-            animals.add(animal);
+            animals.put(animal.getCurPosition(), animal);
+            animal.addObserver(this);
             return true;
         }
         return false;
@@ -35,12 +42,7 @@ public abstract class AbstractWorldMap implements IWorldMap{
     }
 
     public Object objectAt(Vector2d position){
-        for (Animal animal : animals){
-            if (animal.isAt(position)){
-                return animal;
-            }
-        }
-        return null;
+        return animals.get(position);
     }
 
     public String toString(){
