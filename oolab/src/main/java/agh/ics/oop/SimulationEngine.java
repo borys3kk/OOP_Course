@@ -28,8 +28,5 @@ public class SimulationEngine implements IEngine{
         for (int i = 0; i < moves.size(); i++){
             getAnimal(i % animals.size()).move(moves.get(i));
         }
-        for (Animal animal : animals){
-            System.out.println(animal.getCurPosition());
-        }
     }
 }

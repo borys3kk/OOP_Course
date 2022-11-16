@@ -2,6 +2,7 @@ package agh.ics.oop;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class RectangularMap extends AbstractWorldMap{
 
@@ -12,7 +13,6 @@ public class RectangularMap extends AbstractWorldMap{
     public Vector2d lowerLeft(){
         return mapLowerLeft;
     }
-
     public Vector2d upperRight(){
         return mapUpperRight;
     }
