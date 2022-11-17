@@ -9,8 +9,8 @@ import java.util.Vector;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AnimalTest {
-    private int mapX = 5;
-    private int mapY = 5;
+    private int mapX = 6;
+    private int mapY = 6;
     IWorldMap map = new RectangularMap(mapX, mapY);
     Animal testerAnimal;
     @BeforeEach
@@ -67,19 +67,19 @@ public class AnimalTest {
         testerAnimal.move(MoveDirection.FORWARD);
         testerAnimal.move(MoveDirection.LEFT);
         testerAnimal.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(6,6), testerAnimal.getCurPosition());
+        assertEquals(new Vector2d(5,5), testerAnimal.getCurPosition());
     }
 
     @Test
     public void goodMoves(){
-        MoveDirection[] directions = new OptionsParser().parse(new String[]{"f", "b", "r", "l", "f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f"});
+        MoveDirection[] directions = OptionsParser.parse(new String[]{"f", "b", "r", "l", "f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f"});
         IWorldMap map = new RectangularMap(10, 5);
         Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
         IEngine engine = new SimulationEngine(directions, map, positions);
         engine.run();
-        assertTrue(engine.getAnimal(0).isAt(new Vector2d(2, -1)));
+        assertTrue(engine.getAnimal(0).isAt(new Vector2d(2, 0)));
         assertFalse(engine.getAnimal(0).isAt(new Vector2d(4, 0)));
-        assertTrue(engine.getAnimal(1).isAt(new Vector2d(3, 7)));
+        assertTrue(engine.getAnimal(1).isAt(new Vector2d(3, 4)));
         assertFalse(engine.getAnimal(1).isAt(new Vector2d(0, 2)));
     }
 

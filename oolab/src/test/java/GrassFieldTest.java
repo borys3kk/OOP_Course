@@ -28,8 +28,12 @@ public class GrassFieldTest {
         MoveDirection[] directions = OptionsParser.parse(new String[]{"f", "b", "r", "l", "f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f"});
         IEngine engine = new SimulationEngine(directions, grassField, positions);
         engine.run();
+        int i = 0;
         for (Grass grass : grassField.grasses){
-            assertTrue(grassField.canMoveTo(grass.getPosition()));
+            if (grassField.objectAt(grass.getPosition()) instanceof Animal)
+                assertFalse(grassField.canMoveTo(grass.getPosition()));
+            else
+                assertTrue(grassField.canMoveTo(grass.getPosition()));
         }
     }
 }
