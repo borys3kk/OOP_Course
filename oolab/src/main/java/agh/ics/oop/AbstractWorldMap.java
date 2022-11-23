@@ -9,32 +9,36 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     protected MapVisualizer visualizer = new MapVisualizer(this);
     protected Vector2d mapUpperRight;
     protected Vector2d mapLowerLeft;
+    protected MapBoundary mapBorder = new MapBoundary();
 
     public AbstractWorldMap(Vector2d bottomLeftCorner, Vector2d upperRightCorner){
         this.mapLowerLeft = bottomLeftCorner;
         this.mapUpperRight = upperRightCorner;
     }
 
+    @Override
     public void positionChange(Vector2d oldPosition, Vector2d newPosition){
         Animal animal = this.animals.get(oldPosition);
         this.animals.remove(oldPosition);
         this.animals.put(newPosition, animal);
     }
 
-    abstract Vector2d lowerLeft();
-    abstract Vector2d upperRight();
+    public abstract Vector2d lowerLeft();
+    public abstract Vector2d upperRight();
 
     public boolean canMoveTo(Vector2d position){
         return position.follows(mapLowerLeft) && position.precedes(mapUpperRight) && !(objectAt(position) instanceof Animal);
     }
 
     public boolean place(Animal animal){
-        if (canMoveTo(animal.getCurPosition())){
-            animals.put(animal.getCurPosition(), animal);
+        if (canMoveTo(animal.getPosition())){
+            animals.put(animal.getPosition(), animal);
             animal.addObserver(this);
+            animal.addObserver(mapBorder);
+            mapBorder.newElement(animal.getPosition());
             return true;
         }
-        return false;
+        throw new IllegalArgumentException(animal.getPosition() + " is not a valid position for placing");
     }
 
     public boolean isOccupied(Vector2d position){

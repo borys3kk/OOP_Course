@@ -28,6 +28,19 @@ public class GrassField extends AbstractWorldMap{
         return false;
     }
 
+    public boolean canMoveTo(Vector2d position) {
+        if (super.canMoveTo(position)){
+            Object checkPos = objectAt(position);
+            if (checkPos instanceof Grass){
+                placeGrass(1);
+                Grass grassToMow = (Grass) checkPos;
+                grasses.remove(grassToMow);
+                mapBorder.removeElement(grassToMow.getPosition());
+            }
+            return true;
+        }
+        return false;
+    }
 
     public boolean placeGrass(int numOfGrass){
         for (int i = 0; i < numOfGrass; i++){
@@ -42,7 +55,10 @@ public class GrassField extends AbstractWorldMap{
     public boolean placeGrassRandom(){
         Vector2d new_pos = new Vector2d(random.nextInt((int) Math.sqrt(10 * numOfGrass)), random.nextInt((int) Math.sqrt(10 * numOfGrass)));
         if (objectAt(new_pos) == null){
-            this.grasses.add(new Grass(new_pos));
+            Grass grassToGrow = new Grass(new_pos);
+            grasses.add(grassToGrow);
+            grassToGrow.addObserver(this.mapBorder);
+            mapBorder.newElement(grassToGrow.getPosition());
             return true;
         }
         return false;
@@ -59,38 +75,11 @@ public class GrassField extends AbstractWorldMap{
         return null;
     }
 
-
-//    public boolean canMoveTo(Vector2d position) {
-//        if (super.canMoveTo(position)){
-//            Object checkPos = objectAt(position);
-//            if (checkPos instanceof Grass){
-//                placeGrassRandom();
-//                grasses.remove(checkPos);
-//            }
-//            return true;
-//        }
-//        return false;
-//    }
-
     public Vector2d lowerLeft(){
-        Vector2d drawLeftLower = mapUpperRight;
-        for (Vector2d position : animals.keySet()){
-            drawLeftLower = drawLeftLower.lowerLeft(position);
-        }
-        for (Grass grass : grasses){
-            drawLeftLower = drawLeftLower.lowerLeft(grass.getPosition());
-        }
-        return drawLeftLower;
+        return mapBorder.getLowerLeft();
     }
 
     public Vector2d upperRight(){
-        Vector2d drawRightUpper = mapLowerLeft;
-        for (Vector2d position : animals.keySet()){
-            drawRightUpper = drawRightUpper.upperRight(position);
-        }
-        for (Grass grass : grasses){
-            drawRightUpper = drawRightUpper.upperRight(grass.getPosition());
-        }
-        return drawRightUpper;
+        return mapBorder.getUpperRight();
     }
 }

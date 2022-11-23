@@ -1,17 +1,12 @@
 package agh.ics.oop;
 
-public class Grass {
+import java.util.ArrayList;
+
+public class Grass extends AbstractWorldMapElement{
     private Vector2d curPosition;
     public Grass(Vector2d position){
-        this.curPosition = position;
-    }
-
-    public boolean isAt(Vector2d position){
-        return curPosition.equals(position);
-    }
-
-    public Vector2d getPosition() {
-        return curPosition;
+        super(position);
+        this.observers = new ArrayList<>();
     }
 
     public String toString() {

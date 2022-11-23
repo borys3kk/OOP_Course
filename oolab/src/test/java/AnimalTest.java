@@ -3,9 +3,6 @@ package agh.ics.oop;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
-import java.util.Vector;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AnimalTest {
@@ -38,19 +35,19 @@ public class AnimalTest {
     @Test
     public void positionTest() {
         testerAnimal.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(2, 3), testerAnimal.getCurPosition());
+        assertEquals(new Vector2d(2, 3), testerAnimal.getPosition());
         testerAnimal.move(MoveDirection.RIGHT);
         testerAnimal.move(MoveDirection.FORWARD);
         testerAnimal.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(4, 3), testerAnimal.getCurPosition());
+        assertEquals(new Vector2d(4, 3), testerAnimal.getPosition());
         testerAnimal.move(MoveDirection.LEFT);
         testerAnimal.move(MoveDirection.BACKWARD);
-        assertEquals(new Vector2d(4, 2), testerAnimal.getCurPosition());
+        assertEquals(new Vector2d(4, 2), testerAnimal.getPosition());
         testerAnimal.move(MoveDirection.FORWARD);
-        assertNotEquals(new Vector2d(2, 3), testerAnimal.getCurPosition());
+        assertNotEquals(new Vector2d(2, 3), testerAnimal.getPosition());
         testerAnimal.move(MoveDirection.LEFT);
         testerAnimal.move(MoveDirection.FORWARD);
-        assertNotEquals(new Vector2d(1, 2), testerAnimal.getCurPosition());
+        assertNotEquals(new Vector2d(1, 2), testerAnimal.getPosition());
     }
 
     @Test
@@ -58,16 +55,16 @@ public class AnimalTest {
         testerAnimal.move(MoveDirection.FORWARD);
         testerAnimal.move(MoveDirection.FORWARD);
         testerAnimal.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(2,5), testerAnimal.getCurPosition());
+        assertEquals(new Vector2d(2,5), testerAnimal.getPosition());
         testerAnimal.move(MoveDirection.RIGHT);
         testerAnimal.move(MoveDirection.FORWARD);
         testerAnimal.move(MoveDirection.FORWARD);
         testerAnimal.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(5,5), testerAnimal.getCurPosition());
+        assertEquals(new Vector2d(5,5), testerAnimal.getPosition());
         testerAnimal.move(MoveDirection.FORWARD);
         testerAnimal.move(MoveDirection.LEFT);
         testerAnimal.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(5,5), testerAnimal.getCurPosition());
+        assertEquals(new Vector2d(5,5), testerAnimal.getPosition());
     }
 
     @Test

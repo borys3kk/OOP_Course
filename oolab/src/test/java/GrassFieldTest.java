@@ -1,7 +1,10 @@
 package agh.ics.oop;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+
+import java.util.ConcurrentModificationException;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -28,12 +31,32 @@ public class GrassFieldTest {
         MoveDirection[] directions = OptionsParser.parse(new String[]{"f", "b", "r", "l", "f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f"});
         IEngine engine = new SimulationEngine(directions, grassField, positions);
         engine.run();
-        int i = 0;
-        for (Grass grass : grassField.grasses){
-            if (grassField.objectAt(grass.getPosition()) instanceof Animal)
-                assertFalse(grassField.canMoveTo(grass.getPosition()));
-            else
-                assertTrue(grassField.canMoveTo(grass.getPosition()));
+        for (int i = 0; i < grassField.grasses.size(); i++){
+            assertTrue(grassField.canMoveTo(grassField.grasses.get(i).getPosition()));
+        }
+    }
+
+
+
+    @Test
+    public void placeAnimalTest(){
+        GrassField map = new GrassField(10);
+        try{
+            map.place(new Animal(map, new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE)));
+            Assertions.fail("Can't place at border");
+        }
+        catch (IllegalArgumentException ex){
+            Assertions.assertTrue(true);
+        }
+
+        try{
+            map.place(new Animal(map, new Vector2d(3, 1)));
+            map.place(new Animal(map, new Vector2d(3, 1)));
+            Assertions.fail("Can't place two times on the same spot");
+        }
+        catch (IllegalArgumentException ex)
+        {
+            Assertions.assertTrue(true);
         }
     }
 }
