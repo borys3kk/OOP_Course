@@ -14,7 +14,8 @@ public class MapBoundary implements IPositionChangeObserver{
 
     @Override
     public void positionChange(Vector2d oldPosition, Vector2d newPosition){
-
+        removeElement(oldPosition);
+        newElement(newPosition);
     }
 
     public void newElement(Vector2d element){
@@ -28,9 +29,11 @@ public class MapBoundary implements IPositionChangeObserver{
     }
 
     public void printElements(){
+        System.out.println("xSorted:");
         for (Vector2d elem : xSorted){
             System.out.println(elem);
         }
+        System.out.println("ySorted:");
         for (Vector2d elem : ySorted){
             System.out.println(elem);
         }

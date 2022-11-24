@@ -24,7 +24,7 @@ public class App extends Application {
     public void init() throws Exception{
         String[] args = getParameters().getRaw().toArray(new String[0]);
         try{
-            MoveDirection[] directions = OptionsParser.parse(new String[]{"f", "b", "r", "l", "f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "b", "b"});
+            MoveDirection[] directions = OptionsParser.parse(new String[]{"f", "b", "r", "l", "f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f"});
             this.map = new GrassField(10);
             Vector2d[] positions = { new Vector2d(2,2), new Vector2d(2, 4)};
             this.engine = new SimulationEngine(directions, map, positions);
@@ -87,7 +87,7 @@ public class App extends Application {
 
     public void start(Stage primaryStage){
         drawMap();
-        Scene scene = new Scene(gridMap, 800, 800);
+        Scene scene = new Scene(gridMap, 600, 600);
 
         primaryStage.setScene(scene);
         primaryStage.show();

@@ -2,7 +2,7 @@ package agh.ics.oop;
 
 import java.util.List;
 
-public abstract class AbstractWorldMapElement {
+public abstract class AbstractWorldMapElement implements IMapElement{
     protected Vector2d position;
     protected List<IPositionChangeObserver> observers;
     public AbstractWorldMapElement(Vector2d pos){
