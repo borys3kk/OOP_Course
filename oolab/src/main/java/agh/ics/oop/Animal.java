@@ -53,4 +53,14 @@ public class Animal extends AbstractWorldMapElement{
         }
         this.position = newPosition;
     }
+
+    @Override
+    public String getFileName(){
+        return switch (this.curOrientation){
+            case NORTH -> "up.png";
+            case EAST -> "right.png";
+            case SOUTH -> "down.png";
+            case WEST -> "left.png";
+        };
+    }
 }
